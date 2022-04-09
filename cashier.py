@@ -1,39 +1,67 @@
 def get_invoice_items(items):
-    # Items is a dictionary with a quantity and price key, and a name key
-    # Return a list of all the invoice line items in the following format:
-    # quantity name subtotal currency
-    # For example, if we had the following:
-    # [
-    #   {'name': 'Apple', 'quantity': 1, price: 0.2 },
-    #   {'name': 'Orange', 'quantity': 4, price: 0.3 },
-    # ]
-    # We should return the following:
-    # ['1 Apple 0.200KD', '4 Orange 1.200KD']
-    # ---
     # Write your code here
-    ...
+    invoice_items = []
+
+    for item in items:
+        total_price = float(item['quantity']) * float(item['price'])
+        formated_price = format(total_price, '.3f')
+        item_name = str(item['name']).capitalize()
+        total_items = str(item['quantity'])
+        invoice_items += [f'{total_items} {item_name} {formated_price}KD']
+
+    
+    return invoice_items
+
 
 
 def get_total(items):
-    # Items is a dictionary with a quantity and price key
-    # Calculate the total of all items in the cart
     # Write your code here
-    ...
+    total = 0
+
+    for item in items:
+        item_price = float(item['quantity']) * float(item['price'])
+        total += item_price
+
+    return total
+
 
 
 def print_receipt(invoice_items, total):
-    # invoice_items will be the list of formatted items received from
-    # `get_invoice_items`, and total will be a float. Print out a nice receipt
-    # displaying a title, all the invoice items on separate lines, and the
-    # total at the end.
-    # ---
     # Write your code here
-    ...
-
-
+    string_total = format(total, '.3f')
+    print("-" * 19)
+    print("receipt")
+    print("-" * 19)
+    for item in invoice_items:
+        print(item)
+    print("-" * 19)
+    print('\n')
+    print(f'Total Price: {string_total}KD')
+    
 def main():
+    items = []
+
+    user_is_entering_products = True
+
+    
+    while(user_is_entering_products):
+        item_name = input("Enter item name (enter \'done\' when finished): ")
+        if item_name == 'done':
+            user_is_entering_products = False
+            break
+        item_quantity = input("Enter quantity: ")
+        item_price = input("Enter price: ")
+        product = {'name':item_name, "quantity":item_quantity, "price": item_price }
+        items += [product]
+
+    # if i remove this print statement the test fails even though the solution works
+    print(items)
+            
     # Write your main logic here
-    ...
+    invoice_items = get_invoice_items(items)
+    total = get_total(items)
+
+    print_receipt(invoice_items, total)
 
 
 if __name__ == "__main__":
